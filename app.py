@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from config import WEATHER_API_KEY
+from utils.config import WEATHER_API_KEY
+from utils.helper import unix_to_local
 import requests
 import math
 
@@ -15,10 +16,16 @@ async def root():
 async def get_weather(city: str):
     response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={city}&units=imperial&appid={WEATHER_API_KEY}")
     data = response.json()
+
+    time = unix_to_local(data["dt"], data["timezone"])
+    forcast = data["weather"][0]["description"]
+    temp = math.ceil(data["main"]["temp"])
+
     res = {
         "location": city,
-        "forcast": data["weather"][0]["description"],
-        "temp": math.ceil(data["main"]["temp"]),
-        "time": data["dt"]
+        "forcast": forcast,
+        "temp": temp,
+        "time": time
     }
+    
     return res
