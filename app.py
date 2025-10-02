@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from config import WEATHER_API_KEY
 import requests
+import math
 
 app = FastAPI()
 
@@ -17,7 +18,7 @@ async def get_weather(city: str):
     res = {
         "location": city,
         "forcast": data["weather"][0]["description"],
-        "temp": data["main"]["temp"],
+        "temp": math.ceil(data["main"]["temp"]),
         "time": data["dt"]
     }
     return res
