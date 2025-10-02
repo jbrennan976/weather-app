@@ -12,7 +12,12 @@ async def root():
 
 @app.get("/weather/{city}")
 async def get_weather(city: str):
-    response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}")
+    response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={city}&units=imperial&appid={WEATHER_API_KEY}")
     data = response.json()
-    return data["weather"]
-    
+    res = {
+        "location": city,
+        "forcast": data["weather"][0]["description"],
+        "temp": data["main"]["temp"],
+        "time": data["dt"]
+    }
+    return res
