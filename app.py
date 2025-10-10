@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from utils.config import WEATHER_API_KEY
 from utils.helper import unix_to_local
 import requests
@@ -15,12 +15,26 @@ async def root():
 @app.get("/weather/{city}")
 async def get_weather(city: str):
     try:
-        response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={city}&units=imperial&appid={WEATHER_API_KEY}", timeout=5)
-        response.raise_for_status()
-    except requests.exceptions.HTTPError:
+    
+        response = requests.get(f"https://api.openweathermap.org/data/2.5/weather", params={"q": city, "units": "imperial", "appid": WEATHER_API_KEY}, timeout=5)
+        response.raise_for_status
+    
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 404:
+            raise HTTPException(status_code=404, detail= "city not found")
+        elif response.status_code == 401:
+            raise HTTPException(status_code=401, detail=e)
+        else:
+            raise HTTPException(status_code=500, detail=e)
+    
+    except requests.exceptions.ConnectionError as e:
+        raise HTTPException(status_code=500, detail=e)
 
-    except requests.exceptions.RequestException:
-        raise ()
+    except requests.exceptions.ReadTimeout as e:
+        raise HTTPException(status_code=504, detail=e)
+
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500)
 
 
     data = response.json()
