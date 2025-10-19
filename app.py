@@ -17,27 +17,28 @@ async def get_weather(city: str):
     try:
     
         response = requests.get(f"https://api.openweathermap.org/data/2.5/weather", params={"q": city, "units": "imperial", "appid": WEATHER_API_KEY}, timeout=5)
-        response.raise_for_status
-    
+        response.raise_for_status()
+        data = response.json()
+
+
     except requests.exceptions.HTTPError as e:
-        if response.status_code == 404:
-            raise HTTPException(status_code=404, detail= "city not found")
-        elif response.status_code == 401:
-            raise HTTPException(status_code=401, detail=e)
-        else:
-            raise HTTPException(status_code=500, detail=e)
+        if e.response is not None:
+            try:
+                data = e.response.json()
+            except ValueError:
+                raise HTTPException(status_code=e.response.status_code, detail="Invalid response from weather API")
+            
+            raise HTTPException(status_code=int(data["cod"]), detail =data["message"])
     
     except requests.exceptions.ConnectionError as e:
-        raise HTTPException(status_code=500, detail=e)
+        raise HTTPException(status_code=503, detail= "There was an error connecting with the weather API")
 
     except requests.exceptions.ReadTimeout as e:
-        raise HTTPException(status_code=504, detail=e)
+        raise HTTPException(status_code=504, detail= "API request timeout")
 
     except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500)
+        raise HTTPException(status_code=500, detail = "Internal server error")
 
-
-    data = response.json()
 
     time = unix_to_local(data["dt"], data["timezone"])
     forcast = data["weather"][0]["description"]
@@ -45,7 +46,7 @@ async def get_weather(city: str):
 
     res = {
         "location": city,
-        "forcast": forcast,
+        "forecast": forcast,
         "temp": temp,
         "time": time
     }
