@@ -12,7 +12,7 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/weather/{city}")
+@app.get("/weather")
 async def get_weather(city: str):
     try:
     
