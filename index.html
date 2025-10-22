@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to my weather app</h1>
+    </header>
+    <main>
+        <section>
+            <form action="http://127.0.0.1:8000/weather" method="get">
+                <label for="city">Enter a city name:</label>
+                <input type="text" id="city" name="city">
+                
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+    </main>
+    <script src="index.js"></script>
+</body>
+</html>
