@@ -12,15 +12,15 @@
     </header>
     <main>
         <section>
-            <form action="http://127.0.0.1:8000/weather" method="get">
+            <form id="myForm">
                 <label for="city">Enter a city name:</label>
-                <input type="text" id="city" name="city">
+                <input type="text" id="city" name="city" required>
                 
-                <button type="submit">Search</button>
+                <button type="button" onclick="formSubmit()">Search</button>
             </form>
         </section>
 
     </main>
-    <script src="index.js"></script>
+    <script src="./index.js"></script>
 </body>
 </html>
