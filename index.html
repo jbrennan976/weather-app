@@ -14,9 +14,9 @@
         <section>
             <form id="myForm">
                 <label for="city">Enter a city name:</label>
-                <input type="text" id="city" name="city" required>
+                <input type="text" id="city" name="city" minlength="1" maxlength="168" placeholder="e.g. London" pattern="[A-Za-z ]+" >
                 
-                <button type="button" onclick="formSubmit()">Search</button>
+                <button type="submit">Search</button>
             </form>
         </section>
 
