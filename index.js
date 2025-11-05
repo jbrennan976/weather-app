@@ -2,6 +2,7 @@ const result = document.getElementById("weatherResults")
 
 document.getElementById("myForm").addEventListener("submit", async (event) => {
     event.preventDefault()
+    result.innerHTML=""
     let city = document.getElementById("city").value
     city = city.trim().toLowerCase()
     await fetchWeather(city)
@@ -13,20 +14,31 @@ async function fetchWeather(city){
         const response = await fetch(`http://127.0.0.1:8000/weather?city=${city}`)
 
         if (!response.ok){
-            throw new Error(`An error occured getting weather for ${city}`)
+            if (response.status == 404){
+                throw new Error(`Unable to find weather for: ${city}.`)
+            }
+            else{
+                throw new Error(`An error occured getting weather.`)
+            }
         }
         const data = await response.json()
         displayWeather(data)
     }
 
     catch (error) {
-        console.error(error)
+        if ((error.message.includes("Unable to find weather for")) || (error.message.includes("An error occured getting weather"))){
+            console.error(error)
+            displayError(error)
+        }
+        else{
+            console.error(error)
+            displayError("Something went wrong please try again later.")
+        }
     }
 }
 
 function displayWeather(data){
     console.log(data)
-    result.innerHTML = ""
 
     const weatherArticle = document.createElement("article")
 
@@ -45,5 +57,16 @@ function displayWeather(data){
     weatherArticle.append(cityDisplay, forecastDisplay, tempDisplay, timeDisplay)
     result.append(weatherArticle)
 }
-    
+
+
+function displayError(errorMessage){
+
+    const errorArticle = document.createElement("article")
+
+    const errorDisplay = document.createElement("h1")
+    errorDisplay.textContent = errorMessage
+
+    errorArticle.append(errorDisplay)
+    result.append(errorArticle)
+}
 
