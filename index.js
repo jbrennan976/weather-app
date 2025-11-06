@@ -45,16 +45,21 @@ function displayWeather(data){
     const cityDisplay = document.createElement("h1")
     cityDisplay.textContent = data["location"]
 
-    const forecastDisplay = document.createElement("h2")
-    forecastDisplay.textContent = data["forecast"]
-
-    const tempDisplay = document.createElement("h2")
-    tempDisplay.textContent = data["temp"]
-
     const timeDisplay = document.createElement("h2")
     timeDisplay.textContent = data["time"]
 
-    weatherArticle.append(cityDisplay, forecastDisplay, tempDisplay, timeDisplay)
+    const tempDisplay = document.createElement("h2")
+    tempDisplay.textContent = `${data["temp"]}°F`
+
+    const forecastDisplay = document.createElement("h2")
+    forecastDisplay.textContent = data["forecast"]
+
+    const weatherIcon = document.createElement("img")
+    weatherIcon.src = `https://openweathermap.org/img/wn/${data["icon-id"]}@2x.png`
+    weatherIcon.alt = "Weather icon image"
+
+
+    weatherArticle.append(cityDisplay, timeDisplay, tempDisplay,forecastDisplay, weatherIcon)
     result.append(weatherArticle)
 }
 

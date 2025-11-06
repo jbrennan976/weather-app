@@ -48,15 +48,21 @@ async def get_weather(city: str):
         raise HTTPException(status_code=500, detail = "Internal server error")
 
 
+    city_name = data["name"]
+    country = data["sys"]["country"]
+    location = f"{city_name}, {country}"
     time = unix_to_local(data["dt"], data["timezone"])
-    forcast = data["weather"][0]["description"]
-    temp = math.ceil(data["main"]["temp"])
+    temp = round(data["main"]["temp"])
+    forecast = data["weather"][0]["description"].capitalize()
+    icon_id = data["weather"][0]["icon"]
+
 
     res = {
-        "location": city,
-        "forecast": forcast,
+        "location": location,
+        "time": time,
         "temp": temp,
-        "time": time
+        "forecast": forecast,
+        "icon-id": icon_id
     }
     
     return res
