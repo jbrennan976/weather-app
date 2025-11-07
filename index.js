@@ -1,4 +1,4 @@
-const result = document.getElementById("weatherResults")
+const result = document.querySelector(".weather-results")
 
 document.getElementById("myForm").addEventListener("submit", async (event) => {
     event.preventDefault()
@@ -41,17 +41,18 @@ function displayWeather(data){
     console.log(data)
 
     const weatherArticle = document.createElement("article")
+    weatherArticle.classList.add("card", "weather")
 
-    const cityDisplay = document.createElement("h1")
+    const cityDisplay = document.createElement("h2")
     cityDisplay.textContent = data["location"]
 
-    const timeDisplay = document.createElement("h2")
+    const timeDisplay = document.createElement("h3")
     timeDisplay.textContent = data["time"]
 
-    const tempDisplay = document.createElement("h2")
+    const tempDisplay = document.createElement("h3")
     tempDisplay.textContent = `${data["temp"]}°F`
 
-    const forecastDisplay = document.createElement("h2")
+    const forecastDisplay = document.createElement("h3")
     forecastDisplay.textContent = data["forecast"]
 
     const weatherIcon = document.createElement("img")
@@ -67,8 +68,9 @@ function displayWeather(data){
 function displayError(errorMessage){
 
     const errorArticle = document.createElement("article")
+    errorArticle.classList.add("card", "error")
 
-    const errorDisplay = document.createElement("h1")
+    const errorDisplay = document.createElement("h2")
     errorDisplay.textContent = errorMessage
 
     errorArticle.append(errorDisplay)

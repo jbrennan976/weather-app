@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Poppins, Arial, Helvetica, sans-serif;
+    background-color: beige;
+    
+}
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+section {
+    width: 50%;
+    min-width: 200px;
+    margin: 10px 0px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+}
+
+.city-input, .city-input input, button[type="submit"] {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.city-input, .city-submit {
+    margin: 0 10px;
+}
+
+.city-submit {
+    display: flex;
+    align-items: center;
+}
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    margin: 0px auto;
+}
+
+.card {
+    width: 70%;
+    max-width: 350px;
+    text-align: center;
+    padding: 1em;
+    border: 5px solid rgb(177, 177, 177);
+    border-radius: 10px;
+    margin: 0px auto;
+}
+
+.card.weather {
+    background-color: rgba(163, 199, 231, 0.682);
+}
+
+.card.error {
+    background-color: rgb(190, 91, 91);
+}
