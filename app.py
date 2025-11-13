@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from utils.config import WEATHER_API_KEY
-from utils.helper import unix_to_local
+from utils.helper import unix_to_local, parse_response
 import requests
 import math
 
@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="http://127.0.0.1:5500",
+    allow_origins=["http://127.0.0.1:5500"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -47,25 +47,12 @@ async def get_weather(city: str):
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail = "Internal server error")
 
-
-    city_name = data["name"]
-    country = data["sys"]["country"]
-    location = f"{city_name}, {country}"
-    time = unix_to_local(data["dt"], data["timezone"])
-    temp = round(data["main"]["temp"])
-    forecast = data["weather"][0]["description"].capitalize()
-    icon_id = data["weather"][0]["icon"]
-
-
-    res = {
-        "location": location,
-        "time": time,
-        "temp": temp,
-        "forecast": forecast,
-        "icon-id": icon_id
-    }
+    try:
+        result = parse_response(data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error parsing weather API response")
     
-    return res
+    return result
 
     #Error codes:
     # - 404 for city name not found
