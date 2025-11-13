@@ -12,10 +12,9 @@ document.getElementById("myForm").addEventListener("submit", async (event) => {
 async function fetchWeather(city){
     try {
         const response = await fetch(`http://127.0.0.1:8000/weather?city=${city}`)
-
         if (!response.ok){
             if (response.status == 404){
-                throw new Error(`Unable to find weather for: ${city}.`)
+                throw new Error(`Unable to find weather for: ${city}`)
             }
             else{
                 throw new Error(`An error occured getting weather.`)
@@ -70,7 +69,7 @@ function displayError(errorMessage){
     const errorArticle = document.createElement("article")
     errorArticle.classList.add("card", "error")
 
-    const errorDisplay = document.createElement("h2")
+    const errorDisplay = document.createElement("h3")
     errorDisplay.textContent = errorMessage
 
     errorArticle.append(errorDisplay)

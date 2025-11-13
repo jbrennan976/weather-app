@@ -1,12 +1,26 @@
+:root {
+    --text: #2D2D2D;
+    --weather-card: #f0f1c8;
+    --error-card: #E8B3B3;
+    --accent: #4F7CAC;
+    --border: #C9D3DD;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     font-family: Poppins, Arial, Helvetica, sans-serif;
-    background-color: beige;
-    
+    background: linear-gradient(180deg,
+        #E3EEF9 0%,
+        #F7F3E9 100%);
+    color: var(--text);   
+    min-height: 100vw;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
 main {
     display: flex;
     flex-direction: column;
@@ -16,7 +30,7 @@ main {
 }
 
 section {
-    width: 50%;
+    width: 60%;
     min-width: 200px;
     margin: 10px 0px;
     text-align: center;
@@ -24,25 +38,31 @@ section {
 
 form {
     display: flex;
+    justify-content: center;
 }
 
-.city-input, .city-input input, button[type="submit"] {
-    font-size: 1.7rem;
-    font-weight: 600;
+.city-lookup {
+    font-size: 1.5rem;
 }
 
-.city-input, .city-submit {
-    margin: 0 10px;
+.city-lookup input,
+.city-lookup button {
+    border-radius: 5px;
+    font-size: inherit;
+    padding: 8px;
+    border: 3px solid var(--accent)
 }
 
-.city-submit {
-    display: flex;
-    align-items: center;
+.city-lookup div {
+    margin: auto 5px;
 }
-button[type="submit"] {
-    display: block;
-    width: 100%;
-    margin: 0px auto;
+
+button[type=submit]:hover {
+    background-color: #c5c7c88f;
+}
+
+button[type=submit]:active {
+    background-color: #c5c7c88f;
 }
 
 .card {
@@ -50,15 +70,25 @@ button[type="submit"] {
     max-width: 350px;
     text-align: center;
     padding: 1em;
-    border: 5px solid rgb(177, 177, 177);
+    border: 5px solid var(--accent);
     border-radius: 10px;
     margin: 0px auto;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.77);
 }
 
+.card h2 {
+    font-weight: 600;
+}
+
+.card h3 {
+    font-weight: 500;
+}
+
+
 .card.weather {
-    background-color: rgba(163, 199, 231, 0.682);
+    background-color: var(--weather-card)
 }
 
 .card.error {
-    background-color: rgb(190, 91, 91);
+    background-color: var(--error-card);
 }
