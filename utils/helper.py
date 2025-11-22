@@ -1,4 +1,18 @@
 from datetime import datetime, timezone, timedelta
+import re
+
+def validate_city_name(city: str) -> bool | str:
+    city = city.strip().lower()
+
+    if len(city) < 1 or len(city) > 168:
+        return False
+    
+    match = re.search(r'^[a-z\s-]+$', city)
+    if match:
+        return city
+    else:
+        return False
+
 
 def unix_to_local(dt, offset):
     utc_time = datetime.fromtimestamp(dt, tz=timezone.utc)
@@ -10,6 +24,7 @@ def unix_to_local(dt, offset):
     local_time = local_time.strftime("%I:%M %p").lstrip("0")
 
     return local_time
+
 
 def parse_response(data):
     city_name = data["name"]

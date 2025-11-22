@@ -16,6 +16,9 @@ async function fetchWeather(city){
             if (response.status == 404){
                 throw new Error(`Unable to find weather for: ${city}`)
             }
+            else if (response.status == 400){
+                throw new Error(`Invalid city name: ${city}`)
+            }
             else{
                 throw new Error(`An error occured getting weather.`)
             }
@@ -25,7 +28,7 @@ async function fetchWeather(city){
     }
 
     catch (error) {
-        if ((error.message.includes("Unable to find weather for")) || (error.message.includes("An error occured getting weather"))){
+        if ((error.message.includes("Unable to find weather for")) || (error.message.includes("An error occured getting weather")) || (error.message.includes("Invalid city name"))){
             console.error(error)
             displayError(error)
         }

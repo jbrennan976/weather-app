@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from utils.config import WEATHER_API_KEY
-from utils.helper import unix_to_local, parse_response
+from utils.helper import unix_to_local, parse_response, validate_city_name
 import requests
 import math
 
@@ -22,8 +22,11 @@ async def root():
 
 @app.get("/weather")
 async def get_weather(city: str):
-    try:
+    city = validate_city_name(city)
+    if city is False:
+        raise HTTPException(status_code=400, detail="Invalid city name")
     
+    try:
         response = requests.get(f"https://api.openweathermap.org/data/2.5/weather", params={"q": city, "units": "imperial", "appid": WEATHER_API_KEY}, timeout=5)
         response.raise_for_status()
         data = response.json()
@@ -53,8 +56,3 @@ async def get_weather(city: str):
         raise HTTPException(status_code=500, detail="Error parsing weather API response")
     
     return result
-
-    #Error codes:
-    # - 404 for city name not found
-    # - 401 for missing or incorrect API key
-    # - 400 for issue w query string
