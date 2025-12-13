@@ -1,9 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from utils.config import WEATHER_API_KEY
-from utils.helper import unix_to_local, parse_response, validate_city_name
+from utils.helper import parse_response, validate_city_name
 import requests
-import math
 
 app = FastAPI()
 
