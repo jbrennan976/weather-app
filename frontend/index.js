@@ -11,7 +11,7 @@ document.getElementById("myForm").addEventListener("submit", async (event) => {
 
 async function fetchWeather(city){
     try {
-        const response = await fetch(`http://127.0.0.1:8000/weather?city=${city}`)
+        const response = await fetch(`https://weather-app-fgku.onrender.com/weather?city=${city}`)
         if (!response.ok){
             if (response.status == 404){
                 throw new Error(`Unable to find weather for: ${city}`)
