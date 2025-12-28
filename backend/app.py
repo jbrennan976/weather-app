@@ -1,8 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from utils.config import WEATHER_API_KEY
 from utils.helper import parse_response, validate_city_name
-import requests
+import requests, time
+
+START_TIME = time.time()
 
 app = FastAPI()
 
@@ -19,9 +22,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get("/health")
+async def get_health():
+    try:
+        response = requests.get("https://api.openweathermap.org/data/2.5/weather", params={"q": "London", "units": "imperial", "appid": WEATHER_API_KEY}, timeout=3)
+        response.raise_for_status()
+
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail = "Server error")
+
+
+    return JSONResponse(
+        status_code=200, 
+        content={"status": "ok",
+                 "uptime": str(int(time.time() - START_TIME))+ " seconds"}
+        )
 
 @app.get("/weather")
 async def get_weather(city: str):
@@ -30,7 +45,7 @@ async def get_weather(city: str):
         raise HTTPException(status_code=400, detail="Invalid city name")
     
     try:
-        response = requests.get(f"https://api.openweathermap.org/data/2.5/weather", params={"q": city, "units": "imperial", "appid": WEATHER_API_KEY}, timeout=5)
+        response = requests.get("https://api.openweathermap.org/data/2.5/weather", params={"q": city, "units": "imperial", "appid": WEATHER_API_KEY}, timeout=5)
         response.raise_for_status()
         data = response.json()
 
