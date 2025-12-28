@@ -1,4 +1,4 @@
-const API_BASE_URL = ""
+const API_BASE_URL = window.CONFIG.API_BASE_URL
 const result = document.querySelector(".weather-results")
 
 document.getElementById("myForm").addEventListener("submit", async (event) => {
@@ -12,7 +12,7 @@ document.getElementById("myForm").addEventListener("submit", async (event) => {
 
 async function fetchWeather(city){
     try {
-        const response = await fetch(`${API_BASE_URL}weather?city=${city}`)
+        const response = await fetch(`${API_BASE_URL}/weather?city=${city}`)
         if (!response.ok){
             if (response.status == 404){
                 throw new Error(`Unable to find weather for: ${city}`)
