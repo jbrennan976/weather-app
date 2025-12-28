@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from utils.config import WEATHER_API_KEY, API_BASE_URL
+from utils.config import WEATHER_API_KEY
 from utils.helper import parse_response, validate_city_name
 import requests
 
@@ -17,11 +17,6 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-@app.get("/config")
-async def get_config():
-    return {"API_BASE_URL": API_BASE_URL}
-
 
 @app.get("/weather")
 async def get_weather(city: str):
